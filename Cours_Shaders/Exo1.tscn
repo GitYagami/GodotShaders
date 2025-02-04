@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float speed = 1.0; // Vitesse du défilement
+uniform float line_width = 0.2; // Largeur des lignes
+
+void fragment() {
+    // Calcul de la position horizontale dans le temps (inversé)
+    float offset = -TIME * speed;  // Inverser le sens du défilement avec un signe négatif
+
+    // Calcul de la position de la ligne (par rapport à la largeur de l'écran)
+    float line_position = mod(UV.x *2. + offset * 2.0, 0.5);
+    
+    // Détermine si le fragment est sur une ligne
+    if (abs(line_position - 0.5) < line_width) {
+        // Lignes rouges
+        COLOR = vec4(1.0, 0.0, 0.0, 1.0); // Rouge
+    } else {
+        // Lignes noires
+        COLOR = vec4(0.0, 0.0, 0.0, 1.0); // Noir
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 3 )
+shader_param/speed = 1.0
+shader_param/line_width = 0.2
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Exo1" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( 511.5, 302 )
+scale = Vector2( 16.0156, 9.46875 )
+texture = ExtResource( 1 )

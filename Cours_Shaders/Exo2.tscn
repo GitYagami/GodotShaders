@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float speed = 3.0; // Vitesse d'oscillation du cercle
+uniform float radius = 0.2; // Rayon du cercle
+
+void fragment() {
+    // Fond rouge
+    COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+
+    // Position du cercle (centré dans l'écran)
+    vec2 center = vec2(0.3, 0.5);
+    
+    // Calcul de l'oscillation verticale avec le temps
+    float oscillation = sin(TIME * speed) * 0.2;
+
+    // Position du cercle en fonction de l'oscillation
+    center.y += oscillation;
+
+    // Distance du fragment actuel par rapport au centre du cercle
+    float dist = distance(UV, center);
+
+    // Si le fragment est dans le cercle, il sera noir
+    if (dist < radius) {
+        COLOR = vec4(0.0, 0.0, 0.0, 1.0); // Cercle noir
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/speed = 3.0
+shader_param/radius = 0.2
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Exo2" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( 513.248, 299.242 )
+scale = Vector2( 15.8985, 9.33618 )
+texture = ExtResource( 1 )

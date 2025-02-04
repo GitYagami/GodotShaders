@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float speed_x = 0.8; // Vitesse de déplacement horizontal du cercle
+uniform float speed_y = 10.0; // Vitesse d'oscillation verticale du cercle
+uniform float radius = 0.2; // Rayon du cercle
+uniform float amplitude  = 0.2; // Amplitude du mouvement sinusoïdal
+
+void fragment() {
+    COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+
+    // Calcul du mouvement horizontal (déplacement vers la droite)
+    float x_position = mod(TIME * speed_x, 1.0);
+
+    // Calcul du mouvement vertical (oscillation sinusoïdale)
+    float y_position = sin(TIME * speed_y) * amplitude + 0.5;
+
+    // Position du cercle
+    vec2 center = vec2(x_position, y_position);
+
+    // Distance entre le fragment actuel et le centre du cercle
+    float dist = distance(UV, center);
+
+    // Si le fragment est dans le cercle, il sera noir
+    if (dist < radius) {
+        COLOR = vec4(0.0, 0.0, 0.0, 1.0); // Cercle noir
+    }
+}
+"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/speed_x = 0.8
+shader_param/speed_y = 10.0
+shader_param/radius = 0.2
+shader_param/amplitude = 0.2
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Exo3" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( 513.248, 299.242 )
+scale = Vector2( 15.8985, 9.33618 )
+texture = ExtResource( 1 )
